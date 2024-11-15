@@ -1,0 +1,11 @@
+./model_composer_work/FreqShift/wrap_FreqShift.h
+/tools/Xilinx/Vitis/2024.1/aietools/tps/lnx64/gcc/bin/g++ -I/tools/Xilinx/Vitis_HLS/2024.1/include -I/tools/Xilinx/Vitis/2024.1/aietools/include -E -std=c++17 ./model_composer_work/FreqShift/wrap_FreqShift.h -o ./model_composer_work/FreqShift/tu.ii
+arg3 -std=c++17
+./model_composer_work/FreqShift/wrap_FreqShift.h:2: warning: "restrict" redefined
+ #define restrict __restrict
+ 
+In file included from /tools/Xilinx/Vitis/2024.1/aietools/include/adf.h:16,
+                 from ./model_composer_work/FreqShift/wrap_FreqShift.h:1:
+/tools/Xilinx/Vitis/2024.1/aietools/include/adf/new_frontend/adf.h:20: note: this is the location of the previous definition
+ #define restrict
+ 

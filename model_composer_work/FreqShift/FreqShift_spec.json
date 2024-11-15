@@ -1,0 +1,6 @@
+{
+    "Kernel Type": "AIE Kernel",
+    "Kernel Function": "FreqShift",
+    "Kernel Header Files": "FreqShift.h",
+    "Kernel Source Files": "FreqShift.cpp"
+}

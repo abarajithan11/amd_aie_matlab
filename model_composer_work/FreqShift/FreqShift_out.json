@@ -1,0 +1,31 @@
+{
+    "kernels": [
+        {
+            "functionName": "FreqShift",
+            "declFileName": "../../FreqShift.h",
+            "params": [
+                {
+                    "name": "return",
+                    "serializedType": "{Bv}"
+                },
+                {
+                    "name": "in",
+                    "serializedType": "{Q2{R{Tadf::input_buffer{1{t{Bi16}}}}}}"
+                },
+                {
+                    "name": "out",
+                    "serializedType": "{Q2{R{Tadf::output_buffer{1{t{Bi16}}}}}}"
+                }
+            ],
+            "templateSpecKind": "implicit",
+            "templateParams": [
+                {
+                    "name": "FRAME_LENGTH",
+                    "kind": "nontype",
+                    "type": "int",
+                    "value": ""
+                }
+            ]
+        }
+    ]
+}

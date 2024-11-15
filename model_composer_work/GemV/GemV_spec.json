@@ -1,0 +1,6 @@
+{
+    "Kernel Type": "AIE Kernel",
+    "Kernel Function": "GemV",
+    "Kernel Header Files": "GemV.h",
+    "Kernel Source Files": "GemV.cpp"
+}
