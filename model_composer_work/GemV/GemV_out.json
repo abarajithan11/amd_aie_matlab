@@ -20,7 +20,13 @@
             "templateSpecKind": "implicit",
             "templateParams": [
                 {
-                    "name": "FRAME_LENGTH",
+                    "name": "DX",
+                    "kind": "nontype",
+                    "type": "int",
+                    "value": ""
+                },
+                {
+                    "name": "DY",
                     "kind": "nontype",
                     "type": "int",
                     "value": ""

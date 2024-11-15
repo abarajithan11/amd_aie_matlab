@@ -52,7 +52,7 @@
 #include "adf/x86sim/connectorInterfaces.h"
 
 #include "GemV.cpp"
-template void GemV<8>(adf::input_buffer< int16 > & restrict, adf::output_buffer< int16 > & restrict);
+template void GemV<32, 32>(adf::input_buffer< int16 > & restrict, adf::output_buffer< int16 > & restrict);
 
 void
 xmcInvokeKernel(x86sim::IConnector * arg1, x86sim::IConnector * arg2)
@@ -61,7 +61,7 @@ using namespace x86sim;
 using _XmcBT_0 = adf::_io_buffer<int16, adf::direction::in, adf::io_buffer_config< adf::extents<adf::inherited_extent>, adf::locking::sync, adf::addressing::linear, adf::margin<0> >>;
 using _XmcBT_1 = adf::_io_buffer<int16, adf::direction::out, adf::io_buffer_config< adf::extents<adf::inherited_extent>, adf::locking::sync, adf::addressing::linear, adf::margin<0> >>;
 
-GemV<8>(get_input_buffer< _XmcBT_0 >(arg1),
+GemV<32, 32>(get_input_buffer< _XmcBT_0 >(arg1),
   get_output_buffer< _XmcBT_1 >(arg2));
 }
 

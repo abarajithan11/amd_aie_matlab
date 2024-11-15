@@ -118,10 +118,10 @@ XMCSIM_EXPORT void * xmcSimInit(char const *name)
    auto result = SFactory::xmcKernelSimulator
       (config,
   {
-    { ConnectorType::kWindow, ElementDataType::kInt16, Complexity::kReal, 16, 0, Synchronicity::kNumValues, nullptr, new _XmcBT_0(8, 0, 8) }
+    { ConnectorType::kWindow, ElementDataType::kInt16, Complexity::kReal, 64, 0, Synchronicity::kNumValues, nullptr, new _XmcBT_0(32, 0, 32) }
   },
   {
-    { ConnectorType::kWindow, ElementDataType::kInt16, Complexity::kReal, 16, 0, Synchronicity::kNumValues, new _XmcBT_1(8, 0, 8), nullptr }
+    { ConnectorType::kWindow, ElementDataType::kInt16, Complexity::kReal, 64, 0, Synchronicity::kNumValues, new _XmcBT_1(32, 0, 32), nullptr }
   }
       );
    auto k1 = new Kernel_simple(result, "k1");
