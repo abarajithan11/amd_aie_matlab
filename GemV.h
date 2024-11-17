@@ -1,6 +1,7 @@
 
- #include <adf.h>
+#include <adf.h>
+#include "matrix.h"
 
 template <int DX, int DY>
-void GemV(adf::input_buffer<int16>& __restrict in, 
-               adf::output_buffer<int16>& __restrict out);
+void GemV(adf::input_buffer<DTYPE>& __restrict in, 
+               adf::output_buffer<DTYPE>& __restrict out);
