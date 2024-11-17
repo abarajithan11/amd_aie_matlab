@@ -46,20 +46,19 @@ x = randi([-10,10],numTimeSteps, DX);
 % Loop through each time step, multiply the matrix with the vector, and store the result
 
 x_ts = timeseries(x, time);
-y_exp = zeros(numTimeSteps, DY);
+y = zeros(numTimeSteps, DY);
 
 for i = 1:numTimeSteps
     vectorAtTimeStep = x_ts.Data(i, :).';
-    y_exp(i, :) = (Matrix' * vectorAtTimeStep).';
+    y(i, :) = (Matrix' * vectorAtTimeStep).';
 end
 
 
-sim("mm", numTimeSteps-1);
+y_ts = timeseries(y, time);
 
-y_sim = cell2mat(ans.y_tso.Data);
-y_sim = reshape(y_sim, [32,numTimeSteps])';
+% Display the results
+disp('Matrix A:');
+disp(Matrix);
 
-error = nnz(y_exp - y_sim);
 
-disp("Error:");
-disp(error)
+pause

@@ -55,15 +55,19 @@ void GemV(adf::input_buffer<int16>& __restrict in,
     int16* __restrict py=(int16*)out.data();
 
     aie::vector<int16, DX> vx = aie::load_v<DX>(px);
-    aie::vector<int16, DY> vy;
+    aie::accum<acc32, DY> acc;
+    
+    // aie::vector<int16, DY> zeros = aie::zeros<int16,DY>();
+    // acc.from_vector(zeros,0);
+    
+    int16_t* mp = (int16_t *) matrix;
 
-    for (int iy=0; iy<DY; iy++) {
-        vy[iy] = 0;
+    for (int ix=0; ix<DX; ix++) {
+        aie::vector<int16, DY> vm = aie::load_v<DY>(mp);
+        acc =aie::mac(acc,vm,vx[ix]);
 
-        for (int ix=0; ix<DX; ix++)
-            vy[iy] = vy[iy] + matrix[iy][ix] * vx[ix];
-
+        mp += DX;
     }
-
+    aie::vector<int16, DY> vy = acc.template to_vector<int16>(0); // 0: shift
     aie::store_v(py, vy);
 }
