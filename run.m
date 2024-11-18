@@ -1,6 +1,6 @@
-DY = 128;  % Num outputs, calc'd in parallel
-DX = 128;  % Num inputs, = latency
-dtype = 'int8';
+DY = 32;  % Num outputs, calc'd in parallel
+DX = 32;  % Num inputs, = latency
+dtype = 'int16';
 
 numTimeSteps = 100;  % Number of time steps in the timeseries
 timeStep = 1;  % Time interval between each step
@@ -12,7 +12,8 @@ x = randi([-2,2],numTimeSteps, DY);
 %% Write matrix as C header
 
 fileID = fopen('matrix.h', 'w');
-fprintf(fileID, '#ifndef MATRIX_H\n#define MATRIX_H\n\n #define DTYPE %s\n', dtype);
+fprintf(fileID, '#ifndef MATRIX_H\n#define MATRIX_H\n\n');
+fprintf(fileID, '#define DTYPE %s\n#define CONCAT(a,b) a##b\n#define IN_STREAM(T) CONCAT(input_stream_,T)\n#define OUT_STREAM(T) CONCAT(output_stream_,T)\n\n', dtype);
 fprintf(fileID, 'alignas (32) const %s matrix[%d][%d] = {\n', dtype, DX, DY);
 
 for i = 1:DX % Write each row of the matrix

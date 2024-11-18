@@ -3,3 +3,4 @@ code/
 *.autosave
 *work*
 slprj/
+.Xil/
