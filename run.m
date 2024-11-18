@@ -1,6 +1,6 @@
-DY = 32;  % Num outputs, calc'd in parallel
-DX = 32;  % Num inputs, = latency
-dtype = 'int16';
+DY = 128;  % Num outputs, calc'd in parallel
+DX = 128;  % Num inputs, = latency
+dtype = 'int8';
 
 numTimeSteps = 100;  % Number of time steps in the timeseries
 timeStep = 1;  % Time interval between each step
