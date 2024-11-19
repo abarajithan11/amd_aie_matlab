@@ -1,6 +1,8 @@
-*.asv
-code/
-*.autosave
-*work*
-slprj/
-.Xil/
+**/*.asv
+**/code/
+**/*.autosave
+**/*work*
+**/slprj/
+**/.Xil/
+**/wavedata/
+**/*.slxc

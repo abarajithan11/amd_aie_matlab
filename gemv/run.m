@@ -1,5 +1,5 @@
-DY = 128;  % Num outputs, calc'd in parallel
-DX = 128;  % Num inputs, = latency
+DX = 32;  % Num inputs, = latency
+DY = 32;  % Num outputs, calc'd in parallel
 dtype = 'int8';
 
 numTimeSteps = 100;  % Number of time steps in the timeseries
@@ -7,7 +7,7 @@ timeStep = 1;  % Time interval between each step
 time = (0:numTimeSteps-1) * timeStep;  % Create the time vector
 
 mat_t = randi([-2,2],DX,DY);
-x = randi([-2,2],numTimeSteps, DY);
+x = randi([-2,2],numTimeSteps, DX);
 
 %% Write matrix as C header
 
@@ -39,6 +39,7 @@ for i = 1:numTimeSteps
     y_exp(i, :) = (mat_t' * vectorAtTimeStep).';
 end
 
+%% Run sim
 
 sim("mm", numTimeSteps-1);
 
