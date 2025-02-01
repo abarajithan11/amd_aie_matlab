@@ -24,7 +24,7 @@ fprintf(fileID, '#define DTYPE %s\n#define CONCAT(a,b) a##b\n#define IN_STREAM(T
 for idx = 1:2
     matrix = mat_t(idx:2:end, :);
     fprintf(fileID, 'alignas (32) const %s matrix_%d [%d][%d] = {\n', dtype, idx-1, DX2, DY);
-    
+
     for i = 1:DX2 % Write each row of the matrix
         fprintf(fileID, '    {');
         fprintf(fileID, '%.6g, ', matrix(i, 1:end-1)); % Write all but last element
@@ -35,7 +35,7 @@ for idx = 1:2
             fprintf(fileID, '\n'); % No comma for the last row
         end
     end
-    
+
     fprintf(fileID, '};\n');
 end
 fprintf(fileID, '\n#endif // MATRIX_H\n');
