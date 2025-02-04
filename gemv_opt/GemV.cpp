@@ -7,10 +7,10 @@
 #include <stdlib.h>
 #include <type_traits>
 
-// GemV: 44 clocks
-// Main: 42
-// II  : 87
-// Lat : 23
+// GemV: 42 clocks
+// Main: 51
+// II  : 86
+// Lat : 24
 
 
 template <int DX, int DY>
@@ -24,19 +24,19 @@ void GemV(
 
     for (int i=0, id=0; i<DX; i+=2, id+=DY) {
 
-        m0 = aie::load_v<DY>((DTYPE*)matrix_0 + id);
-        m1 = aie::load_v<DY>((DTYPE*)matrix_1 + id);
+        m0 = aie::load_v<DY>((DTYPE*)matrix[0] + id);
+        m1 = aie::load_v<DY>((DTYPE*)matrix[1] + id);
         
         // https://www.xilinx.com/htmldocs/xilinx2022_2/aiengine_intrinsics/intrinsics/group__vect__mult__16x16.html#ga1e00ad6eedd92916e22e27f83abe5f01
         acc = mac16(
             acc,           // v16acc48 acc
-
+        
             concat(m0,m1), // v32i16  xbuff       - Input buffer of 32 elements of type i16
             0,             // int     xstart      - Starting position offset applied to all lanes of input from X buffer. xstart is restricted to multiples of 2 as granularity for xbuff is 32-bit.
             0x73727170,    // uint    xoffsets    - 4b offset for each lane, corresponds to 2x the lane number and each second lane is an offset to the lane before + 1. LSB apply to first lane
             0x77767574,    // uint    xoffsets_hi - 4b offset for each lane, corresponds to 2x the lane number and each second lane is an offset to the lane before + 1. LSB apply to 8th lane
             0x3120,        // uint    xsquare     - Select order of the mini-permute square (default=0x3210). LSB apply to first element
-
+        
             vx,            // v16i16  zbuff       - Input buffer of 16 elements of type i16
             i,             // int     zstart      - Starting position offset applied to all lanes for input from Z buffer. This must be a compile time constant. Only the 4 LSB of the argument are used.
             0x0,           // uint    zoffsets    - 4b offset for each lane, applied to input from Z buffer. LSB apply to first lane

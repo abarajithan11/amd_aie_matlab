@@ -1,5 +1,6 @@
 DX = 16;  % Num inputs, = latency
 DY = 16;  % Num outputs, calc'd in parallel
+Q  = 2;   % number of splits along DX
 dtype = 'int16';
 
 numTimeSteps = 100;  % Number of time steps in the timeseries
@@ -16,29 +17,44 @@ x = randi([-2,2],numTimeSteps, DX);
 
 %% Write odd & even matrices as C header
 
-DX2  = floorDiv(DX,2);
+rowsPerMat = DX / Q;
 fileID = fopen('matrix.h', 'w');
 fprintf(fileID, '#ifndef MATRIX_H\n#define MATRIX_H\n\n');
-fprintf(fileID, '#define DTYPE %s\n#define CONCAT(a,b) a##b\n#define IN_STREAM(T) CONCAT(input_stream_,T)\n#define OUT_STREAM(T) CONCAT(output_stream_,T)\n\n', dtype);
+fprintf(fileID, '#define DTYPE %s\n', dtype);
+fprintf(fileID, '#define CONCAT(a,b) a##b\n');
+fprintf(fileID, '#define IN_STREAM(T) CONCAT(input_stream_,T)\n');
+fprintf(fileID, '#define OUT_STREAM(T) CONCAT(output_stream_,T)\n\n');
 
-for idx = 1:2
-    matrix = mat_t(idx:2:end, :);
-    fprintf(fileID, 'alignas (32) const %s matrix_%d [%d][%d] = {\n', dtype, idx-1, DX2, DY);
+fprintf(fileID, 'alignas(32) const %s matrix[%d][%d][%d] = {\n', dtype, Q, rowsPerMat, DY);
 
-    for i = 1:DX2 % Write each row of the matrix
-        fprintf(fileID, '    {');
-        fprintf(fileID, '%.6g, ', matrix(i, 1:end-1)); % Write all but last element
-        fprintf(fileID, '%.6g}' , matrix(i, end)); % Write last element
-        if i < DX2
-            fprintf(fileID, ',\n'); % Add comma for all rows except the last one
+for q = 1:Q
+    subMat = mat_t(q:Q:end, :);
+    fprintf(fileID, '    { // matrix block %d\n', q-1);
+    for i = 1:rowsPerMat
+        fprintf(fileID, '        {');
+        for j = 1:DY % Loop over each element in the row
+            if j < DY % Add comma if not last
+                fprintf(fileID, '%.6g, ', subMat(i, j));
+            else
+                fprintf(fileID, '%.6g', subMat(i, j));
+            end
+        end
+        fprintf(fileID, '}');
+        if i < rowsPerMat % Add comma if not last
+            fprintf(fileID, ',\n');
         else
-            fprintf(fileID, '\n'); % No comma for the last row
+            fprintf(fileID, '\n');
         end
     end
-
-    fprintf(fileID, '};\n');
+    if q < Q % Add comma if not last
+        fprintf(fileID, '    },\n');
+    else
+        fprintf(fileID, '    }\n');
+    end
 end
-fprintf(fileID, '\n#endif // MATRIX_H\n');
+
+% Close the array and header guard.
+fprintf(fileID, '};\n\n#endif // MATRIX_H\n');
 fclose(fileID);
 
 %% Compute expected
