@@ -1,7 +1,7 @@
-DX = 16;  % Num inputs, = latency
+DX = 32;  % Num inputs, = latency
 DY = 16;  % Num outputs, calc'd in parallel
-Q  = 2;   % number of splits along DX
-dtype = 'int16';
+Q  = 4;   % number of splits along DX
+dtype = 'int8';
 
 numTimeSteps = 100;
 timeStep = 1; 
