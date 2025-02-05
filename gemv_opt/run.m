@@ -6,6 +6,8 @@ dtype = 'int16';
 numTimeSteps = 100;  % Number of time steps in the timeseries
 timeStep = 1;  % Time interval between each step
 time = (0:numTimeSteps-1) * timeStep;  % Create the time vector
+mat_concat = sprintf('m[%d],', 0:Q-1);  % Creates a string like 'm[0],m[1],...,m[N-1],'
+mat_concat(end) = [];  % Remove the last comma
 
 mat_t = randi([-2,2],DX,DY);
 % mat_t = eye(DX);
@@ -21,6 +23,8 @@ rowsPerMat = DX / Q;
 fileID = fopen('matrix.h', 'w');
 fprintf(fileID, '#ifndef MATRIX_H\n#define MATRIX_H\n\n');
 fprintf(fileID, '#define DTYPE %s\n', dtype);
+fprintf(fileID, '#define Q %d\n', Q);
+fprintf(fileID, '#define MQS %s\n', mat_concat);
 fprintf(fileID, '#define CONCAT(a,b) a##b\n');
 fprintf(fileID, '#define IN_STREAM(T) CONCAT(input_stream_,T)\n');
 fprintf(fileID, '#define OUT_STREAM(T) CONCAT(output_stream_,T)\n\n');

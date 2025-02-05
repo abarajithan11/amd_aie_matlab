@@ -19,19 +19,18 @@ void GemV(
     adf::output_buffer<DTYPE>& __restrict out)
 {
     aie::accum<acc48, DY> acc (aie::zeros<acc48,DY>());
-    aie::vector<DTYPE,DY> m0, m1;
+    aie::vector<DTYPE,DY> m [Q];
     aie::vector<DTYPE,DX> vx = aie::load_v<DX>((DTYPE*)in.data());
 
-    for (int i=0, id=0; i<DX; i+=2, id+=DY) {
-
-        m0 = aie::load_v<DY>((DTYPE*)matrix[0] + id);
-        m1 = aie::load_v<DY>((DTYPE*)matrix[1] + id);
+    for (int i=0, id=0; i<DX; i+=Q, id+=DY) {
+        for (int q=0; q<Q; q++)
+            m[q] = aie::load_v<DY>((DTYPE*)matrix[q] + id);
         
         // https://www.xilinx.com/htmldocs/xilinx2022_2/aiengine_intrinsics/intrinsics/group__vect__mult__16x16.html#ga1e00ad6eedd92916e22e27f83abe5f01
         acc = mac16(
             acc,           // v16acc48 acc
         
-            concat(m0,m1), // v32i16  xbuff       - Input buffer of 32 elements of type i16
+            concat(MQS),   // v32i16  xbuff       - Input buffer of 32 elements of type i16
             0,             // int     xstart      - Starting position offset applied to all lanes of input from X buffer. xstart is restricted to multiples of 2 as granularity for xbuff is 32-bit.
             0x73727170,    // uint    xoffsets    - 4b offset for each lane, corresponds to 2x the lane number and each second lane is an offset to the lane before + 1. LSB apply to first lane
             0x77767574,    // uint    xoffsets_hi - 4b offset for each lane, corresponds to 2x the lane number and each second lane is an offset to the lane before + 1. LSB apply to 8th lane
